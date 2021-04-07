@@ -1,0 +1,60 @@
+.MODEL SMALL
+.STACK 100H
+
+.DATA
+ILLI_MSG DB 0AH,'ILLIGAL INPUT',0AH,'$'
+OVER DB  0AH,'OVERFLOW!',0AH,'$'
+
+MSG1 DB 'N/M : $'
+
+N DW ?
+M DW ?
+
+.CODE
+
+MAIN PROC
+
+MOV AX,@DATA  ; initializing data segment
+MOV DS,AX
+
+; print 1st msg
+LEA DX,MSG1
+MOV AH,9
+INT 21H
+
+CALL INDEC  ; calling modify INDEC
+PUSH AX
+
+MOV M,AX
+MOV AH,2
+MOV DL,0AH
+INT 21H
+MOV DL,'.'  ; print '.'
+INT 21H
+
+MOV CX,M
+
+TOP:
+   
+   XOR DX,DX
+   MOV BX,10  ; BX=10
+   MOV AX,N
+   MUL BX     ; AX = AX*BX
+   XOR DX,DX
+   MOV BX,M
+   DIV BX
+   CALL OUTDEC ; calling outdec
+   MOV N,DX
+   LOOP TOP
+
+
+@END:
+MOV AH,4CH
+INT 21H
+
+MAIN ENDP
+
+INCLUDE OUTDEC.ASM
+INCLUDE MODIFIED_INDEC.ASM
+
+END MAIN

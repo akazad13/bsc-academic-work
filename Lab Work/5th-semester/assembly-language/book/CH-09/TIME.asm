@@ -1,0 +1,70 @@
+.MODEL SMALL
+.STACK 100H
+
+.DATA
+ILLI_MSG DB 0AH,'ILLIGAL INPUT',0AH,'$'
+OVER DB  0AH,'OVERFLOW!',0AH,'$'
+
+MSG1 DB 0AH,'ENTER TIME IN SECOND',0AH,'$'
+MSG2 DB 0AH,'OUTPUT: ','$'
+
+.CODE
+
+MAIN PROC
+
+MOV AX,@DATA ;initializing data segment
+MOV DS,AX
+
+MOV AH,9
+LEA DX,MSG1 ;printing msg1
+INT 21H
+
+CALL INDEC  ; call INDEC procedure
+
+PUSH AX
+
+XOR CX,CX
+MOV CL,3       ; CL=3
+
+POP AX
+START:
+
+XOR DX,DX
+MOV BX,60D    ; BX = 60D
+DIV BX        ; AX/BX
+PUSH DX       ; push DX=remainder into Stack
+LOOP START
+
+MOV AH,9
+LEA DX,MSG2  ; second msg
+INT 21H
+
+
+MOV CL ,2   ; CL=2
+
+
+TOP:
+
+POP AX
+CALL OUTDEC  ; calling outdec procedure
+MOV AH,2
+MOV DL,':'
+INT 21H
+
+LOOP TOP
+
+POP AX
+CALL OUTDEC  ; calling outdec procedure
+MOV AH,2
+
+
+@END:
+MOV AH,4CH
+INT 21H
+
+MAIN ENDP
+; including procedure
+INCLUDE OUTDEC.ASM  
+INCLUDE INDEC.ASM
+
+END MAIN

@@ -1,0 +1,201 @@
+                                                        Basic ofimage processing
+
+There are some basics of image processing implementation in matlab before going to details analysis. We should be able to take an image into matlab workspace and convert it to grayscale image and show the histogram of the image.
+
+Problem 01: Taking an image into MATLAB workspace and convert it to grayscale image
+
+A grayscale image is one in which the value each pixel is a single sample representing only an amount of light, which carries intensity information. A grayscale image contains only shades of gray and no color. The gray image is 8 bit image. The range of intensity values vary from 0 to 255, where 0 is black and 255 is white
+
+Why we need grayscale image:
+Grayscale images are usually preferred in digital image processing for their efficiency and low processing cost. A RGB image can also be converted to grayscale image by taking specific portion from each red, green and blue pixels.
+We can convert an image to grayscale by using following formula,
+g(x,y) = 0.3R(x,y)+0.59*G(x,y)+0.11*B(x,y)
+Where R,G and B are red, green and blue channel of the original image respectively
+In matlab, we can convert an image into grayscale by using rgb2gray() function. The implementation and output of this function is shown in fig2
+
+
+Problem 2: Draw histogram of the image
+A histogram is a plot that let us discover and show the distributing of a set of data. In matlab, we can use imhist() function to create a histogram of an image. This histogram function uses an automatic binning algorithm to show the frequency distribution of pixels.
+Why we need histogram:
+A histogram is used as a graphical frequency distribution of an image. This is useful for quickly get an idea about the image.
+  
+
+
+                                                      Image Enhancement     
+                                                      
+In many applications of image processing, where the quality of image is important for human interpretation. So, Image enhancement has many applications. It can be used to enhance medical images, images captured in remote sensing, images from satellite etc. The transformation function of an image has been given below
+s = T ( r )
+Where r is the pixels of the input image and s is the pixels of the output image. T is a transformation function that maps each value of r to each value of s.
+There are several techniques to enhance the given image. In the next 3 section, I will discuss about some of these techniques.
+Gray level transformation
+
+There are three basic gray level transformation.
+	Negative
+	Logarithmic
+	Power – law
+
+Negative transformation:
+
+A negative image is the reverse of a normal image, where light areas appear dark and vise-versa.
+The transformation function,
+s(x,y) = 256-r(x,y)+1
+Where s = output image and r = input image
+Why we use negative transformation:
+We may find some small details from the negative image that cannot be found in the original image. The following figures shows the negative transformation of an image.
+
+
+Log transformation:
+
+The log transformation can be defined by the formula given below,
+S = clog(r+1)
+Where r = pixel value of input image, s = pixel value of output image, c = factor
+During log transformation, the dark pixels in an image are expanded as compared to the higher pixel values. The higher pixel values are kind of compressed in log transformation.
+Why we use log transformation:
+We use log transformation to deal with skewed data. This transformation can be used to make highly skewed distribution less skewed.
+
+
+Inverse log transformation:
+
+The inverse log transformation can be defined by the formula given below,
+S = c*exp(r+1)
+Where r = pixel value of input image, s = pixel value of output image, c = factor
+The inverse log transformation is the opposite of log transformation. It compresses the dark pixels. The figure 14 shows the inverse log transformation.
+
+
+The power Low transformation:
+
+There are further two transformation is power law transformations, that include nth power and nth root transformation. These transformations can be given by the expression:
+s=cr^γ
+This symbol γ is called gamma, due to which this transformation is also known as gamma transformation.
+Variation in the value of γ varies the enhancement of the images. Different display devices / monitors have their own gamma correction, that’s why they display their image at different intensity.
+
+Why we use power low transformation:
+This type of transformation is used for enhancing images for different type of display devices. The gamma of different display devices is different. For example Gamma of CRT lies in between of 1.8 to 2.5, which means the image displayed on CRT is dark.
+
+
+Contrast Stretching:
+
+Contrast is the difference between maximum and minimum pixel intensity. We can enhance an image by stretching the maxim and minimum range of intensity. The formula for stretching the contrast of an image is,
+ 
+Here, f(x,y) = pixel values
+          Fmin  = minimum pixel intensity on the image
+          Fmax  = maximum pixel intensity on the image
+
+Why we use contrast stretching:
+In contrast stretching, we can take the advantage of histogram representation and stretch the range of intensity values of an image so that the image become sharper and enhanced.
+
+
+Histogram equalization:
+
+Histogram equalization is a technique for adjusting image intensities to enhance contrast. To perform histogram equalization, at first, we have to calculate the probability mass function or probability density function (PDF), of all the pixels of a given image.
+
+
+                                          Image smoothing and noise reduction using filtering
+
+There are several filter for smoothing a given image and reduce the noise from it. Usually noise is sharp transition in gray level. But, by local averaging, we can reduce sharp transition thus removing irrelevent details from an image. There are some side effect also. The image would be loosing desired sharp transition like edges. There are several smooting and noise reduction filter. The most used two is:
+	Average/mean filter
+	Median filter
+
+
+Average/Mean filter:
+
+Mean filter is a simple, intuitive and easy to implement method of smoothing images, reducing the amount of intensity variation between one pixel and the next. It is often used to remove predictable or gaussian noise in images.
+The idea of mean filtering is simply to replace each pixel value in an image with the mean value of its neightbors, including itself. This has the effect of eliminating pixel values which are unrepresentative of their sarroundings.
+
+Why we use mean filter:
+Mean filter can smoothen an image and reduce gausian noise (predictabla noise) from an image. For this reasons, mean filter is used.
+
+Limitation of mean filter:
+
+Mean filter can not remove unpredictable noise like satl and pepper noise. To show this, we will add saltd and pepper noise to the previous one and try to reduce noise.
+We can use imnoise(im,'salt & pepper',0.01) function to add salt and pepper noise. The output of applying mean filter is shown in figure 27.
+
+
+Median filter:
+
+Median filter considers its nearby neighbors to decide whether or not it is representative of its surroundings. Then it replace the current pixel value with the median of those values. It can use 4-neighbor method or 8 neighbor according to the requirement.
+Why we use median filter
+Previously we have seen that the mean filter cannot remove unpredictable noise from the image. The median filter is normally used to reduce unpredictable noise such as salt and pepper noise from an image. Median filter is widely used in digital image processing because, under certain conditions, it preserves edges while removing noise. 
+
+
+                                                             
+                                                             Edge detection
+
+Edge detection includes a variety of mathematical methods that aim at identifying points in a digital image at which the image brightness changes sharply or, more formally, has discontinuities. The points at which image brightness changes sharply are typically organized into a set of curved line segments termed edges. Edge detection is a fundamental tool in computer vision, particularly in the areas feature extraction.
+There are several edge detection algorithm. The first order edge detection algorithms we are discussing here is the Prewitt and Sobel algorithm.
+
+Prewitt operator:
+
+The Prewitt operator is a discrete differentiation operator which functions similar to the Sobel operator, by computing the gradient for the image intensity function. It makes use of the maximum directional gradient. As compared to Sobel, the Prewitt masks are simpler to implement but are very sensitive to noise.
+The Prewitt operator uses two type to masks. They are,
+           Horizontal mask  					Vertical mask
+            -1	-1	-1                -1  0  1
+             0	 0	 0                -1  0  1
+             1	 1	 1                -1  0  1
+
+
+Sobel Operator:
+
+The sobel operator is similar to prewitt operator. It detects edges where the gradient magnitude is high. This makes the Sobel edge detector more sensitive to diagonal edge than horizontal and vertical edges. 
+The Sobel operator uses two type to masks. They are,
+           Horizontal mask  					Vertical mask
+            -1	-2	-1                -1  0  1
+             0	 0	 0                -2  0  2
+             1	 2	 1                -1  0  1
+
+
+
+
+Edge detection using 2nd order Laplacian operator:
+
+The laplacian method uses 2nd order derivatives. As a result, they are very sensitive to noise. To overcome this situation, often, the input image is blurred using a mean filter and then apply Laplacian operator. The major difference between Laplacian and other operators like Prewitt, Sobel, Robinson and Kirsch is that these all are first order derivative masks but Laplacian is a second order derivative mask. In this mask we have two further classifications one is Positive Laplacian Operator and other is Negative Laplacian Operator.
+Another difference between Laplacian and other operators is that unlike other operators Laplacian didn’t take out edges in any particular direction but it take out edges in following classification.
+	Inward Edges
+	Outward Edges
+
+Positive Laplacian mask 		    Negative Laplacian mask
+ 0	  1	 0                      0  -1   0
+ 1	 -4	 1                     -1   4  -1
+ 0	  1	 0                      0  -1   0 
+
+
+
+                                                         Sharpening Spatial Filters
+                                                         
+We can make an image sharper using several sharpening spatial filters. They are:
+	Laplacian Operator
+	Unsharp Masking and Highboost Filtering
+  
+Laplacian operator:
+
+Laplacian operator can be used to enhance the sharpness of an image. Laplacian is 2nd order derivative mask. It can be classified into 
+	Positive laplacian operator
+	Negative laplacian operator
+To increase sharpness of an image, if we use the positive laplacian operator, we need to subtract the generated image from the original image. On the other hand, if we use negative laplacian operator, we need to add the generated image with the original image.
+
+Unsharp Masking and Highboost Filtering:
+
+Sharpen image consist of subtracting an unsharp version of an image from original image. There are some steps of unsharp masking. They are
+	Blur the original image
+	Subtract the blurred image form original
+	Add the mask to the original
+
+
+
+                                                  Segmentation
+
+Image segmentation is the process of partitioning a digital image into multiple segments. The goal of segmentation is to simplify and change the representation of an image into something that is more meaningful and easier to analyze.
+There are several technique for segmentation. They are:
+	Global tresholding 
+	Adaptive thresholding
+	Region growing
+
+
+
+                                                    Interpolation
+
+NEAREST NEIGHBOR INTERPOLATION
+
+Bilinear interpolation:
+
+Bicubic interpolation
